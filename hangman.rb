@@ -1,4 +1,5 @@
 require_relative "lib/player"
+require_relative "lib/gallows"
 
 def get_random_word()
   file = File.new("google-10000-english-no-swears.txt")
@@ -18,10 +19,43 @@ def hide_word(random_word)
     puts hidden_word.join
 end
 
-random_word = get_random_word().split("")
+def manage_game_state(player, random_word, gallows)
+  case
+  when $incorrect_letter < 7 && Player.class_variable_get(:@@temp_arr) != random_word
+    $is_end = false
+  when $incorrect_letter == 7 && Player.class_variable_get(:@@temp_arr) != random_word
+    $is_end = false
+    puts "You're on your last turn! Becareful!"
+  when $incorrect_letter < 8 && Player.class_variable_get(:@@temp_arr) == random_word
+    $is_end = true
+    puts "You won! Well done :D!"
+    play_game(player, gallows, random_word)
+  when $incorrect_letter == 8 && Player.class_variable_get(:@@temp_arr) != random_word
+    $is_end = true
+    puts "Sorry, you lost :(..."
+    puts " "
+    puts "The answer was #{random_word.join}"
+    play_game(player, gallows, random_word)    
+  end
+end
 
-hide_word(get_random_word())
+def play_game(player, gallows, random_word)
+  while $is_end == false do
+    player.guess_letter(random_word)
+    gallows.draw_hangman
+    manage_game_state(player, random_word, gallows)
+  end
+end
 
+$incorrect_letter = 0
+$is_end = false
+
+random_word = get_random_word().split("").reject {|i| i == "\n"}
 player = Player.new("Player")
+gallows = Gallows.new
+player.make_temp_array(random_word)
 
-player.guess_letter(random_word)
+hide_word(random_word)
+puts " "
+gallows.draw_hangman
+play_game(player, gallows, random_word)

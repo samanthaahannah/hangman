@@ -1,32 +1,59 @@
 class Player
+  @@temp_arr = []
+
   def initialize(name)
     @name = name
   end
 
+  def make_temp_array(random_word)
+    array_size = random_word.length
+
+    array_size.times do |i|
+      @@temp_arr.push("_ ")
+    end
+  end
+
   def guess_letter(random_word)
-    temp_arr = []
-    puts " "
     puts "Enter a letter"
+    puts " "
     input = gets.chomp.downcase
     puts " "
 
-    if input[/[a-zA-Z]+/] == false && input.length > 1
+    case
+    when input[/[a-zA-Z]+/] == false && input.length > 1
       puts "Invalid input. Please only enter one letter"
-    elsif random_word.include?(input) == true
+      puts " "
+      print @@temp_arr.join
+      puts " "
+      guess_letter(random_word)
+    when input.length < 1
+      puts "No input. Please enter atleast one letter"
+      puts " "
+      print @@temp_arr.join
+      purs " "
+      guess_letter(random_word)
+    when random_word.include?(input) == true && @@temp_arr.include?(input) == false
       puts "This letter is correct!"
-      random_word.each do |i| 
-        if i == input
-          temp_arr.push(input + " ")
-        else
-          temp_arr.push("_ ")
+      random_word.each_with_index do |item, idx| 
+        if item == input
+          @@temp_arr[idx] = input
         end
       end
-
-      puts temp_arr.join
       puts " "
-    elsif random_word.include?(input) == false
-      puts "Wrong letter"
+      puts @@temp_arr.join
       puts " "
+    when random_word.include?(input) == true && @@temp_arr.include?(input) == true
+      puts "You have already found this letter. Pick another"
+      puts " "
+      puts @@temp_arr.join
+      puts " "
+      guess_letter(random_word)
+    when random_word.include?(input) == false
+      puts "Uh-oh! Wrong letter!"
+      puts " "
+      puts @@temp_arr.join
+      puts " "
+      $incorrect_letter += 1
     end
   end
 end
