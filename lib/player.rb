@@ -37,7 +37,7 @@ class Player
   end
 
   def load_game
-    file_path = 'bin/saved_gane.json'
+    file_path = 'bin/saved_game.json'
     if File.exist?(file_path)
       file = File.read(file_path)
       parsed = JSON.parse(file)
@@ -51,53 +51,50 @@ class Player
     end
   end
 
-  def guess_letter(random_word, gallows)
-    puts "Enter a letter. Or enter 1 or 2 to 1: save game, or 2: load a previous game", ""
-    input = gets.chomp.downcase
-    puts " "
+  def get_name(gallows)
+    puts "What is your name? Or enter 1 to load a previous save", ""
+    input = gets.chomp
 
     case
-    when input[/[a-zA-Z](1|2)+/] == false && input.length > 1
+    when input[/[a-zA-Z](2)+/] == false
+      puts "invalid input. Either write a name without numbers, or enter 1 to load a previous save", ""
+      get_name(gallows)
+    when input == "1" && input.length == 1
+        $is_new = false
+        puts "Loading game"
+        load_game
+        puts "Welcome back, #{@name} :)!"
+        gallows.draw_hangman(@incorrect_letter)
+        puts
+        print @temp_arr.join
+        puts
+        guess_letter(@random_word, gallows)
+    else
+      @name = input
+      puts "Hi #{@name}! Let's play Hangman :)!"
+      make_temp_array(@random_word)
+      $is_new = true
+    end
+  end
+
+  def guess_letter(random_word, gallows)
+    puts "Enter a letter. Or enter 1 to save and exit game", ""
+    input = gets.chomp.downcase
+    puts " "
+    case
+    when input[/[a-zA-Z](1)+/] == false && input.length > 1
       puts "Invalid input. Please only enter one letter", ""
       print @temp_arr.join
       puts
-      guess_letter(random_word, gallows)
+      guess_letter(@random_word, gallows)
     when input.length < 1
       puts "No input. Please enter atleast one letter", ""
       print @temp_arr.join
       puts
-      guess_letter(random_word, gallows)
+      guess_letter(@random_word, gallows)
     when input == "1"
-      puts "Do you want to save? (Y/N)"
-      ans = gets.chomp.downcase
-      if ans == "y"
-        puts "Saving game"
-        save_game
-      elsif ans == "n"
-        puts "Please type only a letter"
-      else
-        puts "invalid input"
-      end
-      puts " "
-      print @temp_arr.join
-      puts
-      guess_letter(random_word, gallows)
-    when input == "2"
-      puts "Do you want to load a previous save? (Y/N)"
-      ans = gets.chomp.downcase
-      if ans == "y"
-        puts "Loading game"
-        load_game
-        gallows.draw_hangman(@incorrect_letter)
-      elsif ans == "n"
-        puts "Please type only a letter"
-      else
-        puts "invalid input"
-      end
-      puts
-      print @temp_arr.join
-      puts
-      guess_letter(random_word, gallows)
+      puts "Saving game"
+      exit
     when @random_word.include?(input) == true && @temp_arr.include?(input) == false
       puts "This letter is correct!"
       @random_word.each_with_index do |item, idx| 
@@ -111,11 +108,11 @@ class Player
       puts "You have already found this letter. Pick another", ""
       puts @temp_arr.join
       puts
-      guess_letter(random_word, gallows)
+      guess_letter(@random_word, gallows)
     when @random_word.include?(input) == false
       puts "Uh-oh! Wrong letter!", ""
       puts @temp_arr.join
-      puts " "
+      puts
       @incorrect_letter += 1
     end
   end

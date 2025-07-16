@@ -48,23 +48,36 @@ def play_game(player, random_word, gallows)
   end
 end
 
-def get_name
-  puts "What is your name?"
-  input = gets.chomp
-  puts "Hi #{input}! Let's play Hangman :)!", ""
-  return input
+def reset
+  $is_new = true
+
+  temp_arr = []
+  incorrect_letter = 0
+  is_end = false
+  random_word = get_random_word().split("").reject {|i| i == "\n"}
+
+  player = Player.new("Player1", incorrect_letter, random_word, temp_arr, is_end)
+  gallows = Gallows.new
+  player.get_name(gallows)
+
+  if $is_new == true
+    hide_word(random_word)
+  end
+
+  puts
+  gallows.draw_hangman(player.incorrect_letter)
+  play_game(player, player.random_word, gallows)
 end
 
-temp_arr = []
-incorrect_letter = 0
-is_end = false
-random_word = get_random_word().split("").reject {|i| i == "\n"}
+def get_reset_answer
+  puts "Would you like to play again? Y/N"
+  answer = gets.chomp.downcase
 
-player = Player.new(get_name, incorrect_letter, random_word, temp_arr, is_end)
-gallows = Gallows.new
-player.make_temp_array(random_word)
+  if answer == "y"
+    reset()
+  else
+  end
+end
 
-hide_word(random_word)
-puts
-gallows.draw_hangman(player.incorrect_letter)
-play_game(player, player.random_word, gallows)
+reset()
+get_reset_answer()
