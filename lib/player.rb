@@ -37,13 +37,18 @@ class Player
   end
 
   def load_game
-    file = File.read('bin/saved_game.json')
-    parsed = JSON.parse(file)
-    @name = parsed["name"]
-    @incorrect_letter = parsed["incorrect_letter"]
-    @random_word = parsed["random_word"]
-    @temp_arr = parsed["temp_arr"]
-    @is_end = parsed["is_end"]
+    file_path = 'bin/saved_gane.json'
+    if File.exist?(file_path)
+      file = File.read(file_path)
+      parsed = JSON.parse(file)
+      @name = parsed["name"]
+      @incorrect_letter = parsed["incorrect_letter"]
+      @random_word = parsed["random_word"]
+      @temp_arr = parsed["temp_arr"]
+      @is_end = parsed["is_end"]
+    else
+      puts "There is no previous save data"
+    end
   end
 
   def guess_letter(random_word, gallows)
