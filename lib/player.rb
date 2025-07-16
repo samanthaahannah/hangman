@@ -52,28 +52,26 @@ class Player
   end
 
   def get_name(gallows)
-    puts "What is your name? Or enter 1 to load a previous save", ""
     input = gets.chomp
-
     case
-    when input[/[a-zA-Z](2)+/] == false
-      puts "invalid input. Either write a name without numbers, or enter 1 to load a previous save", ""
-      get_name(gallows)
-    when input == "1" && input.length == 1
-        $is_new = false
-        puts "Loading game"
-        load_game
-        puts "Welcome back, #{@name} :)!"
-        gallows.draw_hangman(@incorrect_letter)
-        puts
-        print @temp_arr.join
-        puts
-        guess_letter(@random_word, gallows)
-    else
+    when /[a-zA-Z]+/.match?(input) == true
       @name = input
       puts "Hi #{@name}! Let's play Hangman :)!"
       make_temp_array(@random_word)
       $is_new = true
+    when input == "1" && input.length == 1
+      $is_new = false
+      puts "Loading game"
+      load_game
+      puts "Welcome back, #{@name} :)!"
+      gallows.draw_hangman(@incorrect_letter)
+      puts
+      print @temp_arr.join
+      puts
+      guess_letter(@random_word, gallows)
+    else
+      puts "invalid input. Either write a name without numbers, or enter 1 to load a previous save", ""
+      get_name(gallows)
     end
   end
 
@@ -82,7 +80,7 @@ class Player
     input = gets.chomp.downcase
     puts " "
     case
-    when input[/[a-zA-Z](1)+/] == false && input.length > 1
+    when /[1a-zA-Z]+/.match?(input) == false && input.length > 1
       puts "Invalid input. Please only enter one letter", ""
       print @temp_arr.join
       puts
@@ -94,6 +92,7 @@ class Player
       guess_letter(@random_word, gallows)
     when input == "1"
       puts "Saving game"
+      save_game
       exit
     when @random_word.include?(input) == true && @temp_arr.include?(input) == false
       puts "This letter is correct!"

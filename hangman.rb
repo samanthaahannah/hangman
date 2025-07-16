@@ -49,6 +49,7 @@ def play_game(player, random_word, gallows)
 end
 
 def reset
+  puts 'What is your name? Or enter 1 to load a previous save'
   $is_new = true
 
   temp_arr = []
