@@ -1,3 +1,5 @@
+require 'csv'
+require 'json'
 require_relative "lib/player"
 require_relative "lib/gallows"
 
@@ -21,29 +23,28 @@ end
 
 def manage_game_state(player, random_word, gallows)
   case
-  when player.get_incorrect < 7 && player.get_temp_arr != random_word
+  when player.get_incorrect < 7 && player.get_temp_arr != player.random_word
     player.get_is_end == false
-  when player.get_incorrect == 7 && player.get_temp_arr != random_word
+  when player.get_incorrect == 7 && player.get_temp_arr != player.random_word
     player.is_end = false
-    puts "You're on your last turn! Becareful!"
-  when player.get_incorrect < 8 && player.get_temp_arr == random_word
+    puts "You're on your last turn! Be careful!"
+  when player.get_incorrect < 8 && player.get_temp_arr == player.random_word
     player.is_end = true
     puts "You won! Well done :D!"
-    play_game(player, gallows, random_word)
-  when player.get_incorrect == 8 && player.get_temp_arr != random_word
+    play_game(player, player.random_word, gallows)
+  when player.get_incorrect == 8 && player.get_temp_arr != player.random_word
     player.is_end = true
-    puts "Sorry, you lost :(..."
-    puts " "
+    puts "Sorry, you lost :(...", ""
     puts "The answer was #{random_word.join}"
-    play_game(player, gallows, random_word)    
+    play_game(player, player.random_word, gallows)    
   end
 end
 
-def play_game(player, gallows, random_word)
+def play_game(player, random_word, gallows)
   while player.get_is_end == false do
-    player.guess_letter(random_word)
-    gallows.draw_hangman(player)
-    manage_game_state(player, random_word, gallows)
+    player.guess_letter(random_word, gallows)
+    gallows.draw_hangman(player.incorrect_letter)
+    manage_game_state(player, player.random_word, gallows)
   end
 end
 
@@ -57,6 +58,6 @@ gallows = Gallows.new
 player.make_temp_array(random_word)
 
 hide_word(random_word)
-puts " "
-gallows.draw_hangman(player)
-play_game(player, gallows, random_word)
+puts
+gallows.draw_hangman(player.incorrect_letter)
+play_game(player, player.random_word, gallows)

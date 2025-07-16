@@ -1,9 +1,9 @@
 class Gallows
   
-  def draw_hangman(player)
+  def draw_hangman(incorrect_letter)
 
     case
-    when player.get_incorrect == 0
+    when incorrect_letter == 0
       puts <<-'EOF'
              
              
@@ -13,47 +13,47 @@ class Gallows
              
       =======
       EOF
-    when player.get_incorrect == 1
-      puts <<-'EOF'
-      --+---+
-            |
-            |
-            |
-            |
-            |
-      =======
-      EOF
-    when player.get_incorrect == 2
+    when incorrect_letter == 1
       puts <<-'EOF'
       --+---+
-        |   |
+            |
             |
             |
             |
             |
       =======
       EOF
-    when player.get_incorrect == 3
+    when incorrect_letter == 2
       puts <<-'EOF'
       --+---+
         |   |
-        O   |
+            |
             |
             |
             |
       =======
       EOF
-    when player.get_incorrect == 4
+    when incorrect_letter == 3
       puts <<-'EOF'
       --+---+
         |   |
         O   |
+            |
+            |
+            |
+      =======
+      EOF
+    when incorrect_letter == 4
+      puts <<-'EOF'
+      --+---+
+        |   |
+        O   |
         |   |
             |
             |
       =======
       EOF
-    when player.get_incorrect == 5
+    when incorrect_letter == 5
       puts <<-'EOF'
       --+---+
         |   |
@@ -63,7 +63,7 @@ class Gallows
             |
       =======
       EOF
-    when player.get_incorrect == 6
+    when incorrect_letter == 6
       puts <<-'EOF'
       --+---+
         |   |
@@ -73,7 +73,7 @@ class Gallows
             |
       =======
       EOF
-    when player.get_incorrect == 7
+    when incorrect_letter == 7
       puts <<-'EOF'
       --+---+
         |   |
@@ -83,7 +83,7 @@ class Gallows
             |
       =======
       EOF
-    when player.get_incorrect == 8
+    when incorrect_letter == 8
       puts <<-'EOF'
       --+---+
         |   |
