@@ -30,7 +30,7 @@ def manage_game_state(player, random_word, gallows)
     puts "You're on your last turn! Be careful!"
   when player.incorrect_letter < 8 && player.temp_arr == player.random_word
     player.is_end = true
-    puts "You won! Well done :D!"
+    puts "You won! Well done, #{player.name} :D!"
     play_game(player, player.random_word, gallows)
   when player.incorrect_letter == 8 && player.temp_arr != player.random_word
     player.is_end = true
@@ -48,12 +48,19 @@ def play_game(player, random_word, gallows)
   end
 end
 
+def get_name
+  puts "What is your name?"
+  input = gets.chomp
+  puts "Hi #{input}! Let's play Hangman :)!", ""
+  return input
+end
+
 temp_arr = []
 incorrect_letter = 0
 is_end = false
 random_word = get_random_word().split("").reject {|i| i == "\n"}
 
-player = Player.new("Player", incorrect_letter, random_word, temp_arr, is_end)
+player = Player.new(get_name, incorrect_letter, random_word, temp_arr, is_end)
 gallows = Gallows.new
 player.make_temp_array(random_word)
 

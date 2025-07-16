@@ -113,8 +113,7 @@ class Player
       puts
       guess_letter(random_word, gallows)
     when @random_word.include?(input) == false
-      puts "Uh-oh! Wrong letter!"
-      puts " "
+      puts "Uh-oh! Wrong letter!", ""
       puts @temp_arr.join
       puts " "
       @incorrect_letter += 1
