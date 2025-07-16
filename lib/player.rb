@@ -47,7 +47,7 @@ class Player
   end
 
   def guess_letter(random_word, gallows)
-    puts "Enter a letter. Or enter 1 or 2 to 1: save game, or two: load a previous game", ""
+    puts "Enter a letter. Or enter 1 or 2 to 1: save game, or 2: load a previous game", ""
     input = gets.chomp.downcase
     puts " "
 
