@@ -23,16 +23,16 @@ end
 
 def manage_game_state(player, random_word, gallows)
   case
-  when player.get_incorrect < 7 && player.get_temp_arr != player.random_word
-    player.get_is_end == false
-  when player.get_incorrect == 7 && player.get_temp_arr != player.random_word
+  when player.incorrect_letter < 7 && player.temp_arr != player.random_word
+    player.is_end = false
+  when player.incorrect_letter == 7 && player.temp_arr != player.random_word
     player.is_end = false
     puts "You're on your last turn! Be careful!"
-  when player.get_incorrect < 8 && player.get_temp_arr == player.random_word
+  when player.incorrect_letter < 8 && player.temp_arr == player.random_word
     player.is_end = true
     puts "You won! Well done :D!"
     play_game(player, player.random_word, gallows)
-  when player.get_incorrect == 8 && player.get_temp_arr != player.random_word
+  when player.incorrect_letter == 8 && player.temp_arr != player.random_word
     player.is_end = true
     puts "Sorry, you lost :(...", ""
     puts "The answer was #{random_word.join}"
@@ -41,7 +41,7 @@ def manage_game_state(player, random_word, gallows)
 end
 
 def play_game(player, random_word, gallows)
-  while player.get_is_end == false do
+  while player.is_end == false do
     player.guess_letter(random_word, gallows)
     gallows.draw_hangman(player.incorrect_letter)
     manage_game_state(player, player.random_word, gallows)

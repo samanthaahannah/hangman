@@ -46,18 +46,6 @@ class Player
     @is_end = parsed["is_end"]
   end
 
-  def get_incorrect(incorrect_letter = 0)
-    @incorrect_letter
-  end
-
-  def get_temp_arr(temp_arr = [])
-    @temp_arr
-  end
-
-  def get_is_end(temp_arr = false)
-    @is_end
-  end
-
   def guess_letter(random_word, gallows)
     puts "Enter a letter. Or enter 1 or 2 to 1: save game, or two: load a previous game", ""
     input = gets.chomp.downcase
